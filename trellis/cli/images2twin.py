@@ -3,7 +3,7 @@ from pathlib import Path
 import pipelime.commands.interfaces as plint
 import pydantic.v1 as pyd
 from trellis.pipelines import TrellisImageTo3DPipeline
-from pipelime.commands.piper import T_NODES, DagBaseCommand, PipelimeCommand
+from pipelime.commands.piper import PipelimeCommand
 from pipelime.piper import PiperPortType
 from trellis.utils import postprocessing_utils
 import typing as t
@@ -57,7 +57,7 @@ class Images2TwinCommand(PipelimeCommand, title="images2twin"):
         rembg_session = new_session(model_name="u2net_custom", model_path=folder)
 
         images_masked = []
-        if self.mask_key:
+        if self.mask_key is not None and self.mask_key in uf[0].keys():
             for s, image in zip(uf, images):
                 mask = s[self.mask_key]()
                 mask = Image.fromarray(mask).convert("L")  # ensure grayscale

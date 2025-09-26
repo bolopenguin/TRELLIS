@@ -34,6 +34,17 @@ class Images2TwinDag(
 
         nodes = {}
 
+        # If no marker folder is provided, skip calibration and masking steps
+        # The masking is done with rembg
+        if self.input_marker_folder is None:
+            nodes["create_twin"] = Images2TwinCommand(
+                input=self.input_folder,
+                output=self.output_folder,
+                image_key="color",
+                mask_key="mask",
+            )
+            return nodes
+
         uf_with_marker_config = self.folder_debug / "uf_with_marker_config"
         nodes["copy_marker_config"] = CopySharedItemsCommand(
             source=self.input_marker_folder,

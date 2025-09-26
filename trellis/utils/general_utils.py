@@ -6,20 +6,24 @@ import contextlib
 
 
 # Dictionary utils
-def _dict_merge(dicta, dictb, prefix=''):
+def _dict_merge(dicta, dictb, prefix=""):
     """
     Merge two dictionaries.
     """
-    assert isinstance(dicta, dict), 'input must be a dictionary'
-    assert isinstance(dictb, dict), 'input must be a dictionary'
+    assert isinstance(dicta, dict), "input must be a dictionary"
+    assert isinstance(dictb, dict), "input must be a dictionary"
     dict_ = {}
     all_keys = set(dicta.keys()).union(set(dictb.keys()))
     for key in all_keys:
         if key in dicta.keys() and key in dictb.keys():
             if isinstance(dicta[key], dict) and isinstance(dictb[key], dict):
-                dict_[key] = _dict_merge(dicta[key], dictb[key], prefix=f'{prefix}.{key}')
+                dict_[key] = _dict_merge(
+                    dicta[key], dictb[key], prefix=f"{prefix}.{key}"
+                )
             else:
-                raise ValueError(f'Duplicate key {prefix}.{key} found in both dictionaries. Types: {type(dicta[key])}, {type(dictb[key])}')
+                raise ValueError(
+                    f"Duplicate key {prefix}.{key} found in both dictionaries. Types: {type(dicta[key])}, {type(dictb[key])}"
+                )
         elif key in dicta.keys():
             dict_[key] = dicta[key]
         else:
@@ -31,14 +35,14 @@ def dict_merge(dicta, dictb):
     """
     Merge two dictionaries.
     """
-    return _dict_merge(dicta, dictb, prefix='')
+    return _dict_merge(dicta, dictb, prefix="")
 
 
 def dict_foreach(dic, func, special_func={}):
     """
     Recursively apply a function to all non-dictionary leaf values in a dictionary.
     """
-    assert isinstance(dic, dict), 'input must be a dictionary'
+    assert isinstance(dic, dict), "input must be a dictionary"
     for key in dic.keys():
         if isinstance(dic[key], dict):
             dic[key] = dict_foreach(dic[key], func)
@@ -54,9 +58,11 @@ def dict_reduce(dicts, func, special_func={}):
     """
     Reduce a list of dictionaries. Leaf values must be scalars.
     """
-    assert isinstance(dicts, list), 'input must be a list of dictionaries'
-    assert all([isinstance(d, dict) for d in dicts]), 'input must be a list of dictionaries'
-    assert len(dicts) > 0, 'input must be a non-empty list of dictionaries'
+    assert isinstance(dicts, list), "input must be a list of dictionaries"
+    assert all(
+        [isinstance(d, dict) for d in dicts]
+    ), "input must be a list of dictionaries"
+    assert len(dicts) > 0, "input must be a non-empty list of dictionaries"
     all_keys = set([key for dict_ in dicts for key in dict_.keys()])
     reduced_dict = {}
     for key in all_keys:
@@ -75,7 +81,7 @@ def dict_any(dic, func):
     """
     Recursively apply a function to all non-dictionary leaf values in a dictionary.
     """
-    assert isinstance(dic, dict), 'input must be a dictionary'
+    assert isinstance(dic, dict), "input must be a dictionary"
     for key in dic.keys():
         if isinstance(dic[key], dict):
             if dict_any(dic[key], func):
@@ -90,7 +96,7 @@ def dict_all(dic, func):
     """
     Recursively apply a function to all non-dictionary leaf values in a dictionary.
     """
-    assert isinstance(dic, dict), 'input must be a dictionary'
+    assert isinstance(dic, dict), "input must be a dictionary"
     for key in dic.keys():
         if isinstance(dic[key], dict):
             if not dict_all(dic[key], func):
@@ -101,11 +107,11 @@ def dict_all(dic, func):
     return True
 
 
-def dict_flatten(dic, sep='.'):
+def dict_flatten(dic, sep="."):
     """
     Flatten a nested dictionary into a dictionary with no nested dictionaries.
     """
-    assert isinstance(dic, dict), 'input must be a dictionary'
+    assert isinstance(dic, dict), "input must be a dictionary"
     flat_dict = {}
     for key in dic.keys():
         if isinstance(dic[key], dict):
@@ -140,24 +146,43 @@ def make_grid(images, nrow=None, ncol=None, aspect_ratio=None):
     elif nrow is not None and ncol is None:
         ncol = (num_images + nrow - 1) // nrow
     else:
-        assert nrow * ncol >= num_images, 'nrow * ncol must be greater than or equal to the number of images'
-    
+        assert (
+            nrow * ncol >= num_images
+        ), "nrow * ncol must be greater than or equal to the number of images"
+
     if images[0].ndim == 2:
-        grid = np.zeros((nrow * images[0].shape[0], ncol * images[0].shape[1]), dtype=images[0].dtype)
+        grid = np.zeros(
+            (nrow * images[0].shape[0], ncol * images[0].shape[1]),
+            dtype=images[0].dtype,
+        )
     else:
-        grid = np.zeros((nrow * images[0].shape[0], ncol * images[0].shape[1], images[0].shape[2]), dtype=images[0].dtype)
+        grid = np.zeros(
+            (nrow * images[0].shape[0], ncol * images[0].shape[1], images[0].shape[2]),
+            dtype=images[0].dtype,
+        )
     for i, img in enumerate(images):
         row = i // ncol
         col = i % ncol
-        grid[row * img.shape[0]:(row + 1) * img.shape[0], col * img.shape[1]:(col + 1) * img.shape[1]] = img
+        grid[
+            row * img.shape[0] : (row + 1) * img.shape[0],
+            col * img.shape[1] : (col + 1) * img.shape[1],
+        ] = img
     return grid
 
 
 def notes_on_image(img, notes=None):
-    img = np.pad(img, ((0, 32), (0, 0), (0, 0)), 'constant', constant_values=0)
+    img = np.pad(img, ((0, 32), (0, 0), (0, 0)), "constant", constant_values=0)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     if notes is not None:
-        img = cv2.putText(img, notes, (0, img.shape[0] - 4), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1)
+        img = cv2.putText(
+            img,
+            notes,
+            (0, img.shape[0] - 4),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (255, 255, 255),
+            1,
+        )
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     return img
 
@@ -176,6 +201,7 @@ def save_image_with_notes(img, path, notes=None):
 
 # debug utils
 
+
 def atol(x, y):
     """
     Absolute tolerance.
@@ -187,7 +213,9 @@ def rtol(x, y):
     """
     Relative tolerance.
     """
-    return torch.abs(x - y) / torch.clamp_min(torch.maximum(torch.abs(x), torch.abs(y)), 1e-12)
+    return torch.abs(x - y) / torch.clamp_min(
+        torch.maximum(torch.abs(x), torch.abs(y)), 1e-12
+    )
 
 
 # print utils
@@ -195,8 +223,7 @@ def indent(s, n=4):
     """
     Indent a string.
     """
-    lines = s.split('\n')
+    lines = s.split("\n")
     for i in range(1, len(lines)):
-        lines[i] = ' ' * n + lines[i]
-    return '\n'.join(lines)
-
+        lines[i] = " " * n + lines[i]
+    return "\n".join(lines)
