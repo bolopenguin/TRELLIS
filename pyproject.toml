@@ -6,7 +6,32 @@ build-backend = "hatchling.build"
 name = "trellis"
 description = "Trellis"
 authors = []
-dependencies = []
+dependencies = [
+    "torch==2.4.1",
+    "torchvision",
+    "xformers==0.0.28",
+    "kaolin",
+    "spconv-cu118",
+    "pipelime-python",
+    "easydict",
+    "rembg",
+    "onnxruntime",
+    "transformers",
+    "open3d",
+    "plyfile",
+    "xatlas",
+    "pyvista",
+    "pymeshfix",
+    "igraph",
+    "flash-attn==2.7.3",
+    "wheel",
+    "utils3d @ git+https://github.com/EasternJournalist/utils3d.git@d790d337638ce478972da01e42d7ee255796f7b4",
+    "nvdiffrast @ git+https://github.com/NVlabs/nvdiffrast",
+    "gsplat==1.5.1+pyt241cu118",
+    "eyesplat",
+    "eyecan-calibry[refiners,feats]==0.4.0",
+    "cutie",
+]
 dynamic = ["version"]
 requires-python = ">=3.9, < 3.12"
 readme = "README.md"
@@ -26,6 +51,9 @@ tmp_path_retention_policy = "failed"
 
 [tool.hatch.version]
 path = "trellis/__init__.py"
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.hatch.build]
 include = [
