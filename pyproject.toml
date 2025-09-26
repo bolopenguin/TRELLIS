@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "trellis"
+description = "Trellis"
+authors = []
+dependencies = []
+dynamic = ["version"]
+requires-python = ">=3.9, < 3.12"
+readme = "README.md"
+license = { text = "MIT" }
+
+
+[project.scripts]
+trellis = "trellis.__init__:app"
+
+[tool.black]
+target-version = ['py311']
+
+[tool.pytest.ini_options]
+filterwarnings = ["ignore::DeprecationWarning"]
+tmp_path_retention_count = 0
+tmp_path_retention_policy = "failed"
+
+[tool.hatch.version]
+path = "trellis/__init__.py"
+
+[tool.hatch.build]
+include = [
+    "trellis/**/*.py",
+]

@@ -1,0 +1,57 @@
+{
+  "$defs": {
+    "Inputs": {
+      "properties": {
+        "input_folder": {
+          "description": "Input underfolder of images",
+          "format": "directory-path",
+          "title": "Input Folder",
+          "type": "string"
+        },
+        "input_marker_folder": {
+          "description": "Path to input underfolder with marker configs.",
+          "format": "directory-path",
+          "title": "Input Marker Folder",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input_folder",
+        "input_marker_folder"
+      ],
+      "title": "Inputs",
+      "type": "object"
+    },
+    "Outputs": {
+      "properties": {
+        "output_folder": {
+          "description": "Output underfolder",
+          "format": "directory-path",
+          "title": "Output Folder",
+          "type": "string"
+        }
+      },
+      "required": [
+        "output_folder"
+      ],
+      "title": "Outputs",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "inputs": {
+      "$ref": "#/$defs/Inputs"
+    },
+    "outputs": {
+      "$ref": "#/$defs/Outputs"
+    }
+  },
+  "required": [
+    "inputs",
+    "outputs"
+  ],
+  "title": "images2twin_dag",
+  "type": "object",
+  "description": "DAG to generate scene Neural Twin.",
+  "version": "0.0.0"
+}

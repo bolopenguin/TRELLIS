@@ -1,0 +1,10 @@
+{
+  "title": "images2twin_dag:0.0.0",
+  "inputs":{
+    "input_folder": "/data/spazzolino_dataset",
+    "input_marker_folder": "/data/spazzolino_dataset"
+  },
+  "outputs": {
+    "output_folder": "/data/spazzolino_dataset_output"
+  }
+}
