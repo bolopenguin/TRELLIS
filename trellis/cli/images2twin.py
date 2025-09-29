@@ -5,7 +5,6 @@ import pydantic.v1 as pyd
 from trellis.pipelines import TrellisImageTo3DPipeline
 from pipelime.commands.piper import PipelimeCommand
 from pipelime.piper import PiperPortType
-from trellis.utils import postprocessing_utils
 import typing as t
 from trellis.representations.gaussian.general_utils import inverse_sigmoid
 
@@ -120,19 +119,9 @@ class Images2TwinCommand(PipelimeCommand, title="images2twin"):
         nt = EyesplatNeuralTwin(eyesplat_dict, {})
 
         # Mesh
-        mesh = postprocessing_utils.to_glb(
-            outputs["gaussian"][0],
-            outputs["mesh"][0],
-            simplify=0.95,  # Ratio of triangles to remove in the simplification process
-            texture_size=1024,  # Size of the texture used for the GLB
-        )
-        vertices = outputs["mesh"][0].vertices
-        faces = outputs["mesh"][0].faces
-        face_normals = outputs["mesh"][0].face_normal
-        mesh = trimesh.Trimesh(
-            vertices=vertices.cpu().numpy(), faces=faces.cpu().numpy()
-        )
-        mesh.visual.face_normals = face_normals.cpu().numpy()
+        vertices = outputs["mesh"][0].vertices.cpu().numpy()
+        faces = outputs["mesh"][0].faces.cpu().numpy()
+        mesh = trimesh.Trimesh(vertices, faces)
         nt.mesh = mesh
 
         sample = pls.Sample({"neural_twin": NeuralTwinItem(nt)})

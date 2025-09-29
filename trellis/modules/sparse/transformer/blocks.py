@@ -1,11 +1,11 @@
 from typing import *
 import torch
 import torch.nn as nn
-from ..basic import SparseTensor
-from ..linear import SparseLinear
-from ..nonlinearity import SparseGELU
-from ..attention import SparseMultiHeadAttention, SerializeMode
-from ...norm import LayerNorm32
+from trellis.modules.sparse.basic import SparseTensor
+from trellis.modules.sparse.linear import SparseLinear
+from trellis.modules.sparse.nonlinearity import SparseGELU
+from trellis.modules.sparse.attention import SparseMultiHeadAttention, SerializeMode
+from trellis.modules.norm import LayerNorm32
 
 
 class SparseFeedForwardNet(nn.Module):

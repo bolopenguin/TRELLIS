@@ -2,9 +2,9 @@ from typing import *
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from ...modules import sparse as sp
-from .base import SparseTransformerBase
-from ..sparse_elastic_mixin import SparseTransformerElasticMixin
+from trellis.modules import sparse as sp
+from trellis.models.structured_latent_vae.base import SparseTransformerBase
+from trellis.models.sparse_elastic_mixin import SparseTransformerElasticMixin
 
 
 class SLatEncoder(SparseTransformerBase):

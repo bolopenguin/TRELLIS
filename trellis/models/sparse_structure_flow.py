@@ -1,14 +1,15 @@
 from typing import *
+import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from ..modules.utils import convert_module_to_f16, convert_module_to_f32
-from ..modules.transformer import (
+from trellis.modules.utils import convert_module_to_f16, convert_module_to_f32
+from trellis.modules.transformer import (
     AbsolutePositionEmbedder,
     ModulatedTransformerCrossBlock,
 )
-from ..modules.spatial import patchify, unpatchify
+from trellis.modules.spatial import patchify, unpatchify
 
 
 class TimestepEmbedder(nn.Module):

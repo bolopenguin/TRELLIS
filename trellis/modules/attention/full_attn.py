@@ -1,7 +1,7 @@
 from typing import *
 import torch
 import math
-from . import DEBUG, BACKEND
+from trellis.modules.attention import DEBUG, BACKEND
 
 if BACKEND == "xformers":
     import xformers.ops as xops

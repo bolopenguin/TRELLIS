@@ -1,8 +1,8 @@
 from typing import *
 import torch
 import torch.nn as nn
-from ..attention import MultiHeadAttention
-from ..norm import LayerNorm32
+from trellis.modules.attention import MultiHeadAttention
+from trellis.modules.norm import LayerNorm32
 
 
 class AbsolutePositionEmbedder(nn.Module):

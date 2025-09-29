@@ -99,11 +99,11 @@ def __getattr__(name):
 
 # For Pylance
 if __name__ == "__main__":
-    from .basic import *
-    from .norm import *
-    from .nonlinearity import *
-    from .linear import *
-    from .attention import *
-    from .conv import *
-    from .spatial import *
+    from trellis.modules.sparse.basic import *
+    from trellis.modules.sparse.norm import *
+    from trellis.modules.sparse.nonlinearity import *
+    from trellis.modules.sparse.linear import *
+    from trellis.modules.sparse.attention import *
+    from trellis.modules.sparse.conv import *
+    from trellis.modules.sparse.spatial import *
     import transformer

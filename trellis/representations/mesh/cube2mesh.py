@@ -1,8 +1,8 @@
 import torch
-from ...modules.sparse import SparseTensor
+from trellis.modules.sparse import SparseTensor
 from easydict import EasyDict as edict
-from .utils_cube import *
-from .flexicubes.flexicubes import FlexiCubes
+from trellis.representations.mesh.utils_cube import *
+from trellis.representations.mesh.flexicubes.flexicubes import FlexiCubes
 
 
 class MeshExtractResult:

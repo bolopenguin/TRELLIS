@@ -1,10 +1,10 @@
 from typing import *
 import torch
 import torch.nn as nn
-from ...modules.utils import convert_module_to_f16, convert_module_to_f32
-from ...modules import sparse as sp
-from ...modules.transformer import AbsolutePositionEmbedder
-from ...modules.sparse.transformer import SparseTransformerBlock
+from trellis.modules.utils import convert_module_to_f16, convert_module_to_f32
+from trellis.modules import sparse as sp
+from trellis.modules.transformer import AbsolutePositionEmbedder
+from trellis.modules.sparse.transformer import SparseTransformerBlock
 
 
 def block_attn_config(self):

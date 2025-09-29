@@ -1,7 +1,11 @@
 import torch
 import numpy as np
 from plyfile import PlyData, PlyElement
-from .general_utils import inverse_sigmoid, strip_symmetric, build_scaling_rotation
+from trellis.representations.gaussian.general_utils import (
+    inverse_sigmoid,
+    strip_symmetric,
+    build_scaling_rotation,
+)
 import utils3d
 
 

@@ -1,5 +1,5 @@
 import torch.nn as nn
-from ..modules import sparse as sp
+from trellis.modules import sparse as sp
 
 FP16_MODULES = (
     nn.Conv1d,

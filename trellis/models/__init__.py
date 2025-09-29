@@ -72,14 +72,14 @@ def from_pretrained(path: str, **kwargs):
 
 # For Pylance
 if __name__ == "__main__":
-    from .sparse_structure_vae import (
+    from trellis.models.sparse_structure_vae import (
         SparseStructureEncoder,
         SparseStructureDecoder,
     )
 
-    from .sparse_structure_flow import SparseStructureFlowModel
+    from trellis.models.sparse_structure_flow import SparseStructureFlowModel
 
-    from .structured_latent_vae import (
+    from trellis.models.structured_latent_vae import (
         SLatEncoder,
         SLatGaussianDecoder,
         SLatRadianceFieldDecoder,
@@ -90,7 +90,7 @@ if __name__ == "__main__":
         ElasticSLatMeshDecoder,
     )
 
-    from .structured_latent_flow import (
+    from trellis.models.structured_latent_flow import (
         SLatFlowModel,
         ElasticSLatFlowModel,
     )

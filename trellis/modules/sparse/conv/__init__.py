@@ -1,4 +1,4 @@
-from .. import BACKEND
+from trellis.modules.sparse import BACKEND
 
 
 SPCONV_ALGO = "auto"  # 'auto', 'implicit_gemm', 'native'
@@ -21,6 +21,6 @@ def __from_env():
 __from_env()
 
 if BACKEND == "torchsparse":
-    from .conv_torchsparse import *
+    from trellis.modules.sparse.conv.conv_torchsparse import *
 elif BACKEND == "spconv":
-    from .conv_spconv import *
+    from trellis.modules.sparse.conv.conv_spconv import *

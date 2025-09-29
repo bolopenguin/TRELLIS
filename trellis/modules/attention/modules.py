@@ -2,7 +2,7 @@ from typing import *
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from .full_attn import scaled_dot_product_attention
+from trellis.modules.attention.full_attn import scaled_dot_product_attention
 
 
 class MultiHeadRMSNorm(nn.Module):

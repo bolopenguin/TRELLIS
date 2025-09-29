@@ -3,12 +3,16 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from ...modules.utils import zero_module, convert_module_to_f16, convert_module_to_f32
-from ...modules import sparse as sp
-from .base import SparseTransformerBase
-from ...representations import MeshExtractResult
-from ...representations.mesh import SparseFeatures2Mesh
-from ..sparse_elastic_mixin import SparseTransformerElasticMixin
+from trellis.modules.utils import (
+    zero_module,
+    convert_module_to_f16,
+    convert_module_to_f32,
+)
+from trellis.modules import sparse as sp
+from trellis.models.structured_latent_vae.base import SparseTransformerBase
+from trellis.representations import MeshExtractResult
+from trellis.representations.mesh import SparseFeatures2Mesh
+from trellis.models.sparse_elastic_mixin import SparseTransformerElasticMixin
 
 
 class SparseSubdivideBlock3d(nn.Module):

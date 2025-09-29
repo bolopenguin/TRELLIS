@@ -342,7 +342,7 @@ class TrellisImageTo3DPipeline(Pipeline):
                 return self._old_inference_model(model, x_t, t, cond=cond_i, **kwargs)
 
         elif mode == "multidiffusion":
-            from .samplers import FlowEulerSampler
+            from trellis.pipelines.samplers import FlowEulerSampler
 
             def _new_inference_model(
                 self,

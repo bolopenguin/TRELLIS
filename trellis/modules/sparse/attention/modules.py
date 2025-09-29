@@ -2,14 +2,18 @@ from typing import *
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from .. import SparseTensor
-from .full_attn import sparse_scaled_dot_product_attention
-from .serialized_attn import (
+from trellis.modules.sparse import SparseTensor
+from trellis.modules.sparse.attention.full_attn import (
+    sparse_scaled_dot_product_attention,
+)
+from trellis.modules.sparse.attention.serialized_attn import (
     SerializeMode,
     sparse_serialized_scaled_dot_product_self_attention,
 )
-from .windowed_attn import sparse_windowed_scaled_dot_product_self_attention
-from ...attention import RotaryPositionEmbedder
+from trellis.modules.sparse.attention.windowed_attn import (
+    sparse_windowed_scaled_dot_product_self_attention,
+)
+from trellis.modules.attention import RotaryPositionEmbedder
 
 
 class SparseMultiHeadRMSNorm(nn.Module):

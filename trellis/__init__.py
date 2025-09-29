@@ -1,9 +1,8 @@
-from . import models
-from . import modules
-from . import pipelines
-from . import renderers
-from . import representations
-from . import utils
+from trellis import models
+from trellis import modules
+from trellis import pipelines
+from trellis import representations
+from trellis import utils
 
 __version__ = "0.0.0"
 

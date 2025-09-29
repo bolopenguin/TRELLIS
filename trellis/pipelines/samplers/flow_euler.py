@@ -3,9 +3,13 @@ import torch
 import numpy as np
 from tqdm import tqdm
 from easydict import EasyDict as edict
-from .base import Sampler
-from .classifier_free_guidance_mixin import ClassifierFreeGuidanceSamplerMixin
-from .guidance_interval_mixin import GuidanceIntervalSamplerMixin
+from trellis.pipelines.samplers.base import Sampler
+from trellis.pipelines.samplers.classifier_free_guidance_mixin import (
+    ClassifierFreeGuidanceSamplerMixin,
+)
+from trellis.pipelines.samplers.guidance_interval_mixin import (
+    GuidanceIntervalSamplerMixin,
+)
 
 
 class FlowEulerSampler(Sampler):

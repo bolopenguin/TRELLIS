@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from . import SparseTensor
-from . import DEBUG
+from trellis.modules.sparse import SparseTensor
+from trellis.modules.sparse import DEBUG
 
 __all__ = [
     "SparseGroupNorm",

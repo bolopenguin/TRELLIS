@@ -1,1 +1,1 @@
-from .strivec import Strivec
+from trellis.representations.radiance_field.strivec import Strivec

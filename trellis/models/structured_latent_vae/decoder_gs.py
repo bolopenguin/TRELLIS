@@ -2,11 +2,11 @@ from typing import *
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from ...modules import sparse as sp
-from ...utils.random_utils import hammersley_sequence
-from .base import SparseTransformerBase
-from ...representations import Gaussian
-from ..sparse_elastic_mixin import SparseTransformerElasticMixin
+from trellis.modules import sparse as sp
+from trellis.utils.random_utils import hammersley_sequence
+from trellis.models.structured_latent_vae.base import SparseTransformerBase
+from trellis.representations import Gaussian
+from trellis.models.sparse_elastic_mixin import SparseTransformerElasticMixin
 
 
 class SLatGaussianDecoder(SparseTransformerBase):

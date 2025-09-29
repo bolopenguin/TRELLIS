@@ -2,8 +2,8 @@ from typing import *
 from enum import Enum
 import torch
 import math
-from .. import SparseTensor
-from .. import DEBUG, ATTN
+from trellis.modules.sparse import SparseTensor
+from trellis.modules.sparse import DEBUG, ATTN
 
 if ATTN == "xformers":
     import xformers.ops as xops

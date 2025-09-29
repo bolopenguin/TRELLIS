@@ -3,13 +3,17 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from ..modules.utils import zero_module, convert_module_to_f16, convert_module_to_f32
-from ..modules.transformer import AbsolutePositionEmbedder
-from ..modules.norm import LayerNorm32
-from ..modules import sparse as sp
-from ..modules.sparse.transformer import ModulatedSparseTransformerCrossBlock
-from .sparse_structure_flow import TimestepEmbedder
-from .sparse_elastic_mixin import SparseTransformerElasticMixin
+from trellis.modules.utils import (
+    zero_module,
+    convert_module_to_f16,
+    convert_module_to_f32,
+)
+from trellis.modules.transformer import AbsolutePositionEmbedder
+from trellis.modules.norm import LayerNorm32
+from trellis.modules import sparse as sp
+from trellis.modules.sparse.transformer import ModulatedSparseTransformerCrossBlock
+from trellis.models.sparse_structure_flow import TimestepEmbedder
+from trellis.models.sparse_elastic_mixin import SparseTransformerElasticMixin
 
 
 class SparseResBlock3d(nn.Module):

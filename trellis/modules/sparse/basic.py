@@ -1,7 +1,7 @@
 from typing import *
 import torch
 import torch.nn as nn
-from . import BACKEND, DEBUG
+from trellis.modules.sparse import BACKEND, DEBUG
 
 SparseTensorData = None  # Lazy import
 

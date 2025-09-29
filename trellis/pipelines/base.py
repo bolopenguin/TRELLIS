@@ -1,7 +1,7 @@
 from typing import *
 import torch
 import torch.nn as nn
-from .. import models
+from trellis import models
 
 
 class Pipeline:

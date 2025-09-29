@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from ..octree import DfsOctree as Octree
+from trellis.representations.octree import DfsOctree as Octree
 
 
 class Strivec(Octree):

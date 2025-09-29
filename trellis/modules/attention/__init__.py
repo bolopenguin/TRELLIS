@@ -39,5 +39,5 @@ def set_debug(debug: bool):
     DEBUG = debug
 
 
-from .full_attn import *
-from .modules import *
+from trellis.modules.attention.full_attn import *
+from trellis.modules.attention.modules import *
