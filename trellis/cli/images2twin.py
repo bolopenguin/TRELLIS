@@ -76,8 +76,14 @@ class Images2TwinCommand(PipelimeCommand, title="images2twin"):
             weights_folder
             / "models--gqk--TRELLIS-image-large-fork/snapshots/25e0d31ffbebe4b5a97464dd851910efc3002d96"
         )
+        folder_dino = str(weights_folder / "hub/facebookresearch_dinov2_main")
+        ckpt_dino = str(
+            weights_folder / "hub/checkpoints/dinov2_vitl14_reg4_pretrain.pth"
+        )
 
-        pipeline = TrellisImageTo3DPipeline.from_pretrained(folder)
+        pipeline = TrellisImageTo3DPipeline.from_pretrained(
+            folder, model_path=folder_dino, ckpt_path=ckpt_dino
+        )
         pipeline.cuda()
         outputs = pipeline.run_multi_image(
             images_masked,

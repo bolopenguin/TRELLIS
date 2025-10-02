@@ -6,7 +6,10 @@ from trellis.representations.gaussian.general_utils import (
     strip_symmetric,
     build_scaling_rotation,
 )
-import utils3d
+from trellis.utils.geometric_utils import (
+    quaternion_to_matrix,
+    matrix_to_quaternion,
+)
 
 
 class Gaussian:
@@ -154,9 +157,9 @@ class Gaussian:
         if transform is not None:
             transform = np.array(transform)
             xyz = np.matmul(xyz, transform.T)
-            rotation = utils3d.numpy.quaternion_to_matrix(rotation)
+            rotation = quaternion_to_matrix(rotation)
             rotation = np.matmul(transform, rotation)
-            rotation = utils3d.numpy.matrix_to_quaternion(rotation)
+            rotation = matrix_to_quaternion(rotation)
 
         dtype_full = [
             (attribute, "f4") for attribute in self.construct_list_of_attributes()
@@ -225,9 +228,9 @@ class Gaussian:
         if transform is not None:
             transform = np.array(transform)
             xyz = np.matmul(xyz, transform)
-            rotation = utils3d.numpy.quaternion_to_matrix(rotation)
+            rotation = quaternion_to_matrix(rotation)
             rotation = np.matmul(rotation, transform)
-            rotation = utils3d.numpy.matrix_to_quaternion(rotation)
+            rotation = matrix_to_quaternion(rotation)
 
         # convert to actual gaussian attributes
         xyz = torch.tensor(xyz, dtype=torch.float, device=self.device)

@@ -1,5 +1,6 @@
 from typing import *
 from contextlib import contextmanager
+import os
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -44,7 +45,9 @@ class TrellisImageTo3DPipeline(Pipeline):
         self._init_image_cond_model(image_cond_model)
 
     @staticmethod
-    def from_pretrained(path: str) -> "TrellisImageTo3DPipeline":
+    def from_pretrained(
+        path: str, ckpt_path: str = None, model_path: str = None
+    ) -> "TrellisImageTo3DPipeline":
         """
         Load a pretrained model.
 
@@ -72,15 +75,45 @@ class TrellisImageTo3DPipeline(Pipeline):
 
         new_pipeline.slat_normalization = args["slat_normalization"]
 
-        new_pipeline._init_image_cond_model(args["image_cond_model"])
+        new_pipeline._init_image_cond_model(
+            args["image_cond_model"], ckpt_path, model_path
+        )
 
         return new_pipeline
 
-    def _init_image_cond_model(self, name: str):
+    def _init_image_cond_model(
+        self, name: str, ckpt_path: str = None, model_path: str = None
+    ):
         """
         Initialize the image conditioning model.
         """
-        dinov2_model = torch.hub.load("facebookresearch/dinov2", name, pretrained=True)
+
+        if ckpt_path is not None and os.path.exists(ckpt_path):
+            print(f"Loading DINOv2 model from local checkpoint: {ckpt_path}")
+
+            if os.path.exists(model_path):
+                dinov2_model = torch.hub.load(
+                    model_path,
+                    name,
+                    source="local",
+                    pretrained=False,
+                )
+            else:
+                dinov2_model = torch.hub.load(
+                    "facebookresearch/dinov2",
+                    name,
+                    pretrained=False,
+                )
+
+            # Load weights from local checkpoint
+            state_dict = torch.load(ckpt_path, map_location="cpu", weights_only=True)
+            dinov2_model.load_state_dict(state_dict, strict=False)
+        else:
+            dinov2_model = torch.hub.load(
+                "facebookresearch/dinov2",
+                name,
+                pretrained=True,
+            )
         dinov2_model.eval()
         self.models["image_cond_model"] = dinov2_model
         transform = transforms.Compose(

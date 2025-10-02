@@ -23,8 +23,6 @@ def __from_env():
     if env_sttn_debug is not None:
         DEBUG = env_sttn_debug == "1"
 
-    print(f"[ATTENTION] Using backend: {BACKEND}")
-
 
 __from_env()
 

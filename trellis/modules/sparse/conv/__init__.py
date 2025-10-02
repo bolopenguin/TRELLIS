@@ -15,7 +15,6 @@ def __from_env():
         "native",
     ]:
         SPCONV_ALGO = env_spconv_algo
-    print(f"[SPARSE][CONV] spconv algo: {SPCONV_ALGO}")
 
 
 __from_env()
