@@ -68,29 +68,3 @@ def from_pretrained(path: str, **kwargs):
     model.load_state_dict(load_file(model_file))
 
     return model
-
-
-# For Pylance
-if __name__ == "__main__":
-    from trellis.models.sparse_structure_vae import (
-        SparseStructureEncoder,
-        SparseStructureDecoder,
-    )
-
-    from trellis.models.sparse_structure_flow import SparseStructureFlowModel
-
-    from trellis.models.structured_latent_vae import (
-        SLatEncoder,
-        SLatGaussianDecoder,
-        SLatRadianceFieldDecoder,
-        SLatMeshDecoder,
-        ElasticSLatEncoder,
-        ElasticSLatGaussianDecoder,
-        ElasticSLatRadianceFieldDecoder,
-        ElasticSLatMeshDecoder,
-    )
-
-    from trellis.models.structured_latent_flow import (
-        SLatFlowModel,
-        ElasticSLatFlowModel,
-    )

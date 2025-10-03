@@ -8,8 +8,6 @@ from pipelime.piper import PiperPortType
 import typing as t
 from trellis.representations.gaussian.general_utils import inverse_sigmoid
 
-os.environ["SPCONV_ALGO"] = "native"
-
 
 class Images2TwinCommand(PipelimeCommand, title="images2twin"):
     """Convert a folder of images to underfolder dataset."""
@@ -32,6 +30,19 @@ class Images2TwinCommand(PipelimeCommand, title="images2twin"):
         description="Key for the mask in the output dataset",
     )
 
+    rembg_model_path: str | None = pyd.Field(
+        default=None,
+        description="Path to the rembg model. If None, use the default model.",
+    )
+    trellis_model_path: str | None = pyd.Field(
+        default=None,
+        description="Path to the trellis models. If None, use the default models.",
+    )
+    dino_model_path: str | None = pyd.Field(
+        default=None,
+        description="Path to the dino model. If None, use the default models.",
+    )
+
     def run(self):
         import pipelime.sequences as pls
         from PIL import Image
@@ -50,10 +61,12 @@ class Images2TwinCommand(PipelimeCommand, title="images2twin"):
             image = s[self.image_key]()
             images.append(Image.fromarray(image))
 
-        weights_folder = Path(os.environ.get("TRELLIS_ROOT", "/app/weights"))
-        print(f"Using weights folder: {weights_folder}")
-        folder = str(weights_folder / "u2net.onnx")
-        rembg_session = new_session(model_name="u2net_custom", model_path=folder)
+        if self.rembg_model_path is not None:
+            rembg_session = new_session(
+                model_name="u2net_custom", model_path=self.rembg_model_path
+            )
+        else:
+            rembg_session = new_session(model_name="u2net")
 
         images_masked = []
         if self.mask_key is not None and self.mask_key in uf[0].keys():
@@ -72,31 +85,29 @@ class Images2TwinCommand(PipelimeCommand, title="images2twin"):
                 image_masked = image_masked.convert("RGBA")
                 images_masked.append(image_masked)
 
-        folder = str(
-            weights_folder
-            / "models--gqk--TRELLIS-image-large-fork/snapshots/25e0d31ffbebe4b5a97464dd851910efc3002d96"
-        )
-        folder_dino = str(weights_folder / "hub/facebookresearch_dinov2_main")
-        ckpt_dino = str(
-            weights_folder / "hub/checkpoints/dinov2_vitl14_reg4_pretrain.pth"
-        )
+        trellis_model = self.trellis_model_path
+        if trellis_model is None:
+            trellis_model = "microsoft/TRELLIS-image-large"
+
+        dino_model = None
+        dino_ckpt = None
+        if self.dino_model_path is not None:
+            dino_model = str(
+                Path(self.dino_model_path) / "facebookresearch_dinov2_main"
+            )
+            dino_ckpt = str(
+                Path(self.dino_model_path)
+                / "checkpoints/dinov2_vitl14_reg4_pretrain.pth"
+            )
 
         pipeline = TrellisImageTo3DPipeline.from_pretrained(
-            folder, model_path=folder_dino, ckpt_path=ckpt_dino
+            trellis_model, model_path=dino_model, ckpt_path=dino_ckpt
         )
         pipeline.cuda()
         outputs = pipeline.run_multi_image(
             images_masked,
-            seed=1,
-            # Optional parameters
-            sparse_structure_sampler_params={
-                "steps": 12,
-                "cfg_strength": 7.5,
-            },
-            slat_sampler_params={
-                "steps": 12,
-                "cfg_strength": 3,
-            },
+            sparse_structure_sampler_params={"steps": 12, "cfg_strength": 7.5},
+            slat_sampler_params={"steps": 12, "cfg_strength": 3},
         )
 
         gaussians: Gaussian = outputs["gaussian"][0]

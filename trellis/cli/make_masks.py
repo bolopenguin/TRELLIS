@@ -24,13 +24,11 @@ import torch
 
 class CutieTracker:
 
-    def __init__(self, mask: np.ndarray) -> None:
+    def __init__(self, mask: np.ndarray, cutie_model_path: str | None = None) -> None:
         from pathlib import Path
         import os
 
-        weights_folder = Path(os.environ.get("TRELLIS_ROOT", "/app/weights"))
-
-        cutie = get_default_model(str(weights_folder / "cutie-base-mega.pth"))
+        cutie = get_default_model(cutie_model_path)
         self._processor = InferenceCore(cutie, cfg=cutie.cfg)
         self._processor.max_internal_size = 1024
 
@@ -113,22 +111,29 @@ class BoardMasker:
     Find a mask with DepthAnything and Rembg. Ensure the board is not present in the mask.
     """
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        rembg_model_path: str | None = None,
+        depth_anything_model_path: str | None = None,
+        cutie_model_path: str | None = None,
+    ) -> None:
         from pathlib import Path
         import os
 
-        weights_folder = Path(os.environ.get("TRELLIS_ROOT", "/app/weights"))
+        if rembg_model_path is not None:
+            self._rembg_session = new_session(
+                model_name="u2net_custom", model_path=rembg_model_path
+            )
+        else:
+            self._rembg_session = new_session(model_name="u2net")
 
-        self._rembg_session = new_session(
-            model_name="u2net_custom", model_path=str(weights_folder / "u2net.onnx")
-        )
+        da_model_path = "depth-anything/Depth-Anything-V2-Large-hf"
+        if depth_anything_model_path is not None:
+            da_model_path = depth_anything_model_path
         self._da_pipeline = pipeline(
-            task="depth-estimation",
-            model=str(
-                weights_folder
-                / "models--depth-anything--Depth-Anything-V2-Large-hf/snapshots/7581137eff8d4e94f6e796d3baea0e9fa79b22d2"
-            ),
+            task="depth-anything/Depth-Anything-V2-Large-hf", model=da_model_path
         )
+
         self._padding = 10
 
     def _get_depth(self, image: np.ndarray) -> np.ndarray:
@@ -278,6 +283,19 @@ class MakeMasksCommand(PipelimeCommand, title="make_masks"):
     output: plint.OutputDatasetInterface = plint.OutputDatasetInterface.pyd_field(
         piper_port=PiperPortType.OUTPUT,
         description="Output undefolder",
+    )
+
+    rembg_model_path: str | None = pyd.Field(
+        default=None,
+        description="Path to the rembg model. If None, use the default model.",
+    )
+    depth_anything_model_path: str | None = pyd.Field(
+        default=None,
+        description="Path to the depth anything model. If None, use the default model.",
+    )
+    cutie_model_path: str | None = pyd.Field(
+        default=None,
+        description="Path to the cutie model. If None, use the default model.",
     )
 
     def run(self):

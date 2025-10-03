@@ -25,16 +25,19 @@ dependencies = [
     "igraph",
     "flash-attn==2.7.3+cu118torch2.4",
     "wheel",
+
     "gsplat==1.5.1+pyt241cu118",
     "eyesplat",
     "eyecan-calibry[refiners,feats]==0.4.0",
     "cutie",
 ]
 dynamic = ["version"]
-requires-python = ">=3.9, < 3.12"
+requires-python = ">=3.11, < 3.12"
 readme = "README.md"
 license = { text = "MIT" }
 
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "hatch", "build"]
 
 [project.scripts]
 trellis = "trellis.__init__:app"
